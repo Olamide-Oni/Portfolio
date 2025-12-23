@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Ohni's Portfolio</title>
-</head>
-<body>
-    <div class="wrapper">
-        <div class="header">
-            <div class="time-container">
-                <div class="time" id="time" data-testid="currentTimeUTC"></div>
-                <div class="day" id="day" data-testid="currentDay"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <main >
+      <p >Hello, I’m <strong>Olamide Oni</strong>.</p>
+
+      <p style="margin: 2rem 0px;">
+        I am a software engineer interested in building reliable systems,
+        writing clean code, and understanding how things work under the hood.
+      </p>
+
+      <p style="margin: 2rem 0px;">
+        I mostly work with JavaScript / TypeScript and enjoy backend development.
+        Recently, I’ve been learning more about distributed systems using other languages such as Rust, Python, Go.
+      </p>
+
+      <p style="margin: 2rem 0px;">
+        You can find me on
+        <a href="https://github.com/Olamide-Oni"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg> GitHub</a>,
+        <a href="https://x.com/ohnii_"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg> Twitter</a>,
+        or reach me via
+        <a href="mailto:olamideoni591@gmail.com"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg> email</a>.
+      </p>
+
+      <p>Some things I’ve worked on:</p>
+
+      <ul>
+        <li><a href="https://github.com/Olamide-Oni/anchor_vault"><div style="display: flex; gap: 16px; border-width: 1px; border-color: rgb(77, 73, 70); border-style: solid; border-radius: 3%; padding: 0px 4px;">
+            <div>
+                <img src="/anchor vault.png" alt="anchor_vault" style="width: 5rem; height: 5rem; padding-top: 0.5rem;" >
             </div>
-            <nav class="navbar">
-                <ul class="nav-links">
-                    <li><a href="#hero-section">Home</a></li>
-                    <li><a href="#projects-section">Projects</a></li>
-                    <li><a href="#contact-section">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="burger" onclick="toggleMenu()">
-                <span></span>
+            <div>
+                <p>Anchor vault</p>
+                <p>A secured smart contract for tokens/asset exchange onchain</p>
             </div>
-        </div>
-        <div class="hero-section" id="hero-section">
-            <div class="intro-goals">
-                <h1>Hi!, I am <span data-testid="slackDisplayName">DevOHNI</span></h1>
-                <h2>My goals for the next 2 years is to become a tech-entrepreneur and build MVP Products that scales. This is my portfolio, journaling projects I have developed.</h2>
+        </div></a></li>
+        <li><a href="https://github.com/Olamide-Oni/bookbot"><div style="display: flex; gap: 16px; border-width: 1px; border-color: rgb(77, 73, 70); border-style: solid; border-radius: 3%; padding: 0px 4px;">
+            <div>
+                <img src="/bookbot.png" alt="anchor_vault" style="width: 5rem; height: 5rem; padding-top: 0.5rem;" >
             </div>
-            <div class="my-image" >
-                <img src="./assests/slack-picture.png" alt="" data-testid="slackProfilePicture">
+            <div>
+                <h3>Bookbot</h3>
+                <p>A CLI tool for analyzing books built with python</p>
             </div>
-        </div>
-        <div class="projects-section" id="projects-section">
-            <h1>Projects</h1>
-            <div class="portfolio-website">
-                <h2>DevOHNI Portfolio</h2>
-                <ul>
-                    <li>
-                        <p>This portfolio website is one of the project I worked on while participating in <a href="http://hng.tech/learn" target="_blank"   data-testid="hngLink" >HNG Internship program</a> </p>
-                    </li>
-                    <li>During the course of building this website I also learnt about <a href="http://keyword.dog/" target="_blank" data-testid="keywordLink">keyword.dog</a> and <a href="http://scrapeanyweb.site/" target="_blank" data-testid="scrapeanywebLink">scrapeanyweb.site</a>
-                    </li>
-                <hr>
-                <p></p>
-                </ul>
+        </div></a></li>
+        <li><a href="https://github.com/Olamide-Oni/bubblemaps_bot"><div style="display: flex; gap: 16px; border-width: 1px; border-color: rgb(77, 73, 70); border-style: solid; border-radius: 3%; padding: 0px 4px;">
+            <div>
+                <img src="/bubblemaps bot.png" alt="anchor_vault" style="width: 5rem; height: 5rem; padding-top: 0.5rem;" >
             </div>
-        </div>
-        <div class="contact-section" id="contact-section">
-            <h1>Do you need a developer?</h1>
-            <p>I'm HIM!. I am the developer you need!. Contact ME through my email <span data-testid="slackEmail" >olamideoni591@gmail.com</span></p>
-        </div>
-    </div>
-    <script src="main.js"></script>
-</body>
+            <div>
+                <h3>Bubblemaps Bot</h3>
+                <p>Multi-Chain Token Info & Visualization Telegram Bot built with Typescript</p>
+            </div>
+        </div></a></li>
+        <li><a href="https://olamide-oni.github.io/React-jobs/jobs.html"><div style="display: flex; gap: 16px; border-width: 1px; border-color: rgb(77, 73, 70); border-style: solid; border-radius: 3%; padding: 0px 4px;">
+            <div>
+                <img src="/logo.png" alt="anchor_vault" style="width: 5rem; height: 5rem; padding-top: 0.5rem;" >
+            </div>
+            <div>
+                <h3>React Jobs</h3>
+                <p>React-jobs based website</p>
+            </div>
+        </div></a></li>
+      </ul>
+    </main>
+  </body>
 </html>
