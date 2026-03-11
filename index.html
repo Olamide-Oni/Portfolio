@@ -5,26 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio</title>
     <link rel="stylesheet" href="./style.css" />
+        <style>
+            @font-face {
+                font-display: block;
+                font-family: Roboto;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 600;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 700;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+            }
+
+            #sib-container input:-ms-input-placeholder {
+                text-align: left;
+                font-family: Helvetica, sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container input::placeholder {
+                text-align: left;
+                font-family: Helvetica, sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container textarea::placeholder {
+                text-align: left;
+                font-family: Helvetica, sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container a {
+                text-decoration: underline;
+                color: #2BB2FC;
+            }
+        </style>
+        <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
   <script 
             src="https://referly.so/affiliate-tracker.js" 
             data-affiliate data-program-id="6a7a3b0c-51ed-491d-afea-63a71822e3b9" 
             async>
             </script>
-<!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '2112362');
-</script>
-<!-- End MailerLite Universal -->
   </head>
     
 
   <body>
     <main >
-      <p >Hello, I’m <strong>Olamide Oni</strong>.</p>
+     <!-- <p >Hello, I’m <strong>Olamide Oni</strong>.</p>
 
       <p style="margin: 2rem 0px;">
         I am a software engineer interested in building reliable systems,
@@ -83,13 +119,57 @@
                 <p>React-jobs based website</p>
             </div>
         </div></a></li>
-      </ul>
-      <div class="ml-embedded" data-form="twcDUI"></div>
+      </ul> -->
+      <div>
+        <button id="test-affiliate-button" type="button">Apply Affiliate ID to Checkout Links</button>
+
+	<p>
+		<a
+			id="polar-checkout-link"
+			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			Open Polar Checkout Link
+		</a>
+	</p>
+
+	<p>
+		<a
+			id="polar-embed-link"
+			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect"
+			data-polar-checkout
+			data-polar-checkout-theme="light"
+		>
+			Purchase (Embedded)
+		</a>
+	</p>
+      </div>
+            
     </main>
-    <script>
-(function () {
+        <!-- <script>
+            window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+            window.LOCALE = 'en';
+            window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+            window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+            window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+            window.translation = {
+                common: {
+                    selectedList: '{quantity} list selected',
+                    selectedLists: '{quantity} lists selected',
+                    selectedOption: '{quantity} selected',
+                    selectedOptions: '{quantity} selected',
+                }
+            };
+
+            var AUTOHIDE = Boolean(0);
+        </script>
+        <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script> -->
+  <!-- <script>
+ (function () {
 function findEmailAndName(form) {
-    const emailInput = form.elements['fields[email]'];
+    const emailInput = form.elements['EMAIL'];
     if (emailInput) {
         console.log('Email:', emailInput.value);
 }
@@ -107,6 +187,7 @@ function findEmailAndName(form) {
 }
 
 function handleFormSubmit(event) {
+    event.preventDefault();
         console.log("executing onSubmit");
     const form = event.target;
     const { email, name } = findEmailAndName(form);
@@ -133,6 +214,64 @@ attachListeners();
 const observer = new MutationObserver(() => attachListeners());
 observer.observe(document.body, { childList: true, subtree: true });
 })();
-</script>
+</script> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script>
+		window.affiliateId = window.affiliateId || "test-affiliate-123";
+
+    function withAffiliateParam(url, affiliateId) {
+        try {
+            const parsed = new URL(url, window.location.origin);
+            if (!parsed.searchParams.has("custom_field_data.referly_affiliate_id")) {
+                parsed.searchParams.set("custom_field_data.referly_affiliate_id", affiliateId);
+            }
+            return parsed.toString();
+        } catch (error) {
+            return url;
+        }
+    }
+
+		function updatePolarCheckoutUrls() {
+			const affiliateId = window.affiliateId;
+			if (!affiliateId) {
+				return;
+			}
+
+			const polarCheckoutPrefix = "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect";
+
+			$("a").each(function () {
+				const oldUrl = $(this).attr("href");
+				if (!oldUrl) {
+					return;
+				}
+
+				const isExactCheckoutLink = oldUrl.startsWith(polarCheckoutPrefix);
+				const isEmbeddedCheckoutLink = $(this).is("[data-polar-checkout]");
+
+				if (isExactCheckoutLink || isEmbeddedCheckoutLink) {
+					const newUrl = withAffiliateParam(oldUrl, affiliateId);
+					$(this).attr("href", newUrl);
+				}
+			});
+		}
+
+		$(document).ready(function () {
+			setTimeout(function () {
+				updatePolarCheckoutUrls();
+			}, 2000);
+
+			$("#test-affiliate-button").on("click", function () {
+				updatePolarCheckoutUrls();
+				alert("Checkout links updated with affiliate ID: " + window.affiliateId);
+			});
+		});
+	</script>
+
+	<script
+		defer
+		data-auto-init
+		src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@latest/dist/embed.global.js"
+	></script>
   </body>
 </html>
