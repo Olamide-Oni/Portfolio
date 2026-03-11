@@ -223,8 +223,8 @@ observer.observe(document.body, { childList: true, subtree: true });
     function withAffiliateParam(url, affiliateId) {
         try {
             const parsed = new URL(url, window.location.origin);
-            if (!parsed.searchParams.has("custom_field_data.referly_affiliate_idd")) {
-                parsed.searchParams.set("custom_field_data.referly_affiliate_idd", affiliateId);
+            if (!parsed.searchParams.has("custom_field_data.referly_affiliate_id")) {
+                parsed.searchParams.set("custom_field_data.referly_affiliate_id", affiliateId.toString());
             }
             return parsed.toString();
         } catch (error) {
