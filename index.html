@@ -126,7 +126,7 @@
 	<p>
 		<a
 			id="polar-checkout-link"
-			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect"
+			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_GTGznl2HDCkZVqjClnIJaaXZBZOk8XaiDIB0m4f1cKw/redirect"
 			target="_blank"
 			rel="noopener noreferrer"
 		>
@@ -137,7 +137,7 @@
 	<p>
 		<a
 			id="polar-embed-link"
-			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect"
+			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_GTGznl2HDCkZVqjClnIJaaXZBZOk8XaiDIB0m4f1cKw/redirect"
 			data-polar-checkout
 			data-polar-checkout-theme="light"
 		>
@@ -238,7 +238,7 @@ observer.observe(document.body, { childList: true, subtree: true });
 				return;
 			}
 
-			const polarCheckoutPrefix = "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_eYjSZVokEDyvJ7oMnHD9IuLesdAO265vz1qow3bxSbS/redirect";
+            const polarCheckoutPrefix = "https://sandbox-api.polar.sh/v1/checkout-links";
 
 			$("a").each(function () {
 				const oldUrl = $(this).attr("href");
@@ -246,7 +246,7 @@ observer.observe(document.body, { childList: true, subtree: true });
 					return;
 				}
 
-				const isExactCheckoutLink = oldUrl.startsWith(polarCheckoutPrefix);
+                const isExactCheckoutLink = oldUrl.startsWith(polarCheckoutPrefix);
 				const isEmbeddedCheckoutLink = $(this).is("[data-polar-checkout]");
 
 				if (isExactCheckoutLink || isEmbeddedCheckoutLink) {
