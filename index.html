@@ -50,11 +50,17 @@
             }
         </style>
         <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
-  <script 
-            src="https://referly.so/affiliate-tracker.js" 
-            data-affiliate data-program-id="6a7a3b0c-51ed-491d-afea-63a71822e3b9" 
-            async>
-            </script>
+  <!-- <script 
+        src="https://referly.so/affiliate-tracker.js" 
+        data-affiliate data-program-id="6a7a3b0c-51ed-491d-afea-63a71822e3b9" 
+        async>
+    </script> -->
+
+    <script 
+        src="./aff.js" 
+        data-affiliate data-program-id=" 1a156eba-0561-4179-8097-2aeb3ac9d36b" 
+        async>
+    </script>
   </head>
     
 
@@ -126,7 +132,7 @@
 	<p>
 		<a
 			id="polar-checkout-link"
-			href="https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_GTGznl2HDCkZVqjClnIJaaXZBZOk8XaiDIB0m4f1cKw/redirect"
+			href="https://buy.polar.sh/polar_cl_GlsnA16dGqEpbMAeBI6vUUoJ11tdhtQbfeKh32YFoc4"
 			target="_blank"
 			rel="noopener noreferrer"
 		>
@@ -218,14 +224,23 @@ observer.observe(document.body, { childList: true, subtree: true });
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script>
-		window.affiliateId = window.affiliateId || "test-affiliate-123";
 
     function withAffiliateParam(url, affiliateId) {
         try {
             const parsed = new URL(url, window.location.origin);
-            if (!parsed.searchParams.has("custom_field_data.referly_affiliate_idvd")) {
+          /*  if (!parsed.searchParams.has("custom_field_data.referly_affiliate_idvd")) {
                 parsed.searchParams.set("custom_field_data.referly_affiliate_idvd", affiliateId.toString());
-            }
+            } */
+
+          /*  if (!parsed.searchParams.has("metadata.referly_affiliate_idvd")) {
+                parsed.searchParams.set("metadata.referly_affiliate_idvd", affiliateId.toString());
+            } */
+           
+            if (!parsed.searchParams.has("reference_id")) {
+                parsed.searchParams.set("reference_id", affiliateId.toString());
+            } 
+
+
             return parsed.toString();
         } catch (error) {
             return url;
@@ -273,5 +288,23 @@ observer.observe(document.body, { childList: true, subtree: true });
 		data-auto-init
 		src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@latest/dist/embed.global.js"
 	></script>
+    <script>
+      function updatePolarLinks() {
+    if (window.affiliateId) {
+      document.querySelectorAll('a[href*="buy.polar.sh"]').forEach((link) => {
+        if (link.href.includes('reference_id=')) return;
+        const separator = link.href.includes('?') ? '&' : '?';
+        link.href =
+          link.href + separator + 'reference_id=' + window.affiliateId;
+      });
+    }
+  }
+
+  setTimeout(updatePolarLinks, 800);
+  setTimeout(updatePolarLinks, 1500);
+  setTimeout(updatePolarLinks, 2500);
+  window.addEventListener('affiliate_referral_ready', updatePolarLinks);
+
+</script>
   </body>
 </html>
