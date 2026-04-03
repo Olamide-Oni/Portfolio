@@ -54,9 +54,9 @@
         src="https://referly.so/affiliate-tracker.js" 
         data-affiliate data-program-id="6a7a3b0c-51ed-491d-afea-63a71822e3b9" 
         async>
-    </script> 
+    </script>
 
-    <!--<script 
+   <!-- <script 
         src="./aff.js" 
         data-affiliate data-program-id=" 1a156eba-0561-4179-8097-2aeb3ac9d36b" 
         async>
@@ -223,7 +223,7 @@ observer.observe(document.body, { childList: true, subtree: true });
 </script> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script>
+	<!--<script>
 
     function withAffiliateParam(url, affiliateId) {
         try {
@@ -305,6 +305,68 @@ observer.observe(document.body, { childList: true, subtree: true });
   setTimeout(updatePolarLinks, 2500);
   window.addEventListener('affiliate_referral_ready', updatePolarLinks);
 
+</script> -->
+  <script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+
+    // Helper to decode + fix "+"
+    const clean = (value) =>
+      value ? decodeURIComponent(value).replace(/\+/g, " ").trim() : "";
+
+    // Extract fields
+    const fullName = clean(params.get("invitee_full_name"));
+    const firstName = clean(params.get("invitee_first_name"));
+    const lastName = clean(params.get("invitee_last_name"));
+    const email = clean(params.get("invitee_email"));
+
+    const amountRaw = params.get("invitee_paymount_amount");
+    const currency = clean(params.get("invitee_payment_currency"));
+
+    // Build name
+    let name = "";
+    if (fullName) {
+      name = fullName;
+    } else if (firstName || lastName) {
+      name = `${firstName} ${lastName}`.trim();
+    }
+
+    // Convert amount safely
+    const amount = amountRaw ? parseFloat(amountRaw) : null;
+
+    // Guard: must have email
+    if (!email) {
+      console.warn("No email found in Calendly redirect");
+      return;
+    }
+
+    // Prevent duplicate tracking
+    if (sessionStorage.getItem("calendly_tracked")) return;
+    sessionStorage.setItem("calendly_tracked", "true");
+
+    // ---- 1. Track lead ----
+   /* if (typeof window.createplgemail === "function") {
+      window.createplgemail({
+        name: name || null,
+        email,
+        source: "calendly",
+      });
+    } */
+
+    // ---- 2. Track sale (only if amount exists) ----
+    if (
+      typeof window.createPushLapSale === "function" &&
+      amount !== null &&
+      !isNaN(amount)
+    ) {
+      window.createPushLapSale({
+        amount,
+        name: name || "",
+        email,
+        /*currency, // optional (your function doesn’t require it yet) */
+      });
+    }
+  })();
 </script>
-  </body>
+</body>
 </html>
