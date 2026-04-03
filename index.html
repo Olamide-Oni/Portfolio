@@ -320,8 +320,10 @@ observer.observe(document.body, { childList: true, subtree: true });
     const lastName = clean(params.get("invitee_last_name"));
     const email = clean(params.get("invitee_email"));
 
-    const amountRaw = params.get("invitee_paymount_amount");
+    const amountRaw = params.get("invitee_payment_amount");
     const currency = clean(params.get("invitee_payment_currency"));
+
+	console.log("Data: ", fullName, email, amountRaw)
 
     // Build name
     let name = "";
