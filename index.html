@@ -323,7 +323,14 @@ observer.observe(document.body, { childList: true, subtree: true });
     const amountRaw = params.get("invitee_payment_amount");
     const currency = clean(params.get("invitee_payment_currency"));
 
-	console.log("Data: ", fullName, email, amountRaw)
+    console.log("Calendly Data:", {
+      fullName,
+      firstName,
+      lastName,
+      email,
+      amountRaw,
+      currency,
+    });
 
     // Build name
     let name = "";
@@ -336,6 +343,8 @@ observer.observe(document.body, { childList: true, subtree: true });
     // Convert amount safely
     const amount = amountRaw ? parseFloat(amountRaw) : null;
 
+    console.log("Parsed amount:", amount, "isNaN:", isNaN(amount));
+
     // Guard: must have email
     if (!email) {
       console.warn("No email found in Calendly redirect");
@@ -343,30 +352,56 @@ observer.observe(document.body, { childList: true, subtree: true });
     }
 
     // Prevent duplicate tracking
-    if (sessionStorage.getItem("calendly_tracked")) return;
+    if (sessionStorage.getItem("calendly_tracked")) {
+      console.log("Already tracked, skipping...");
+      return;
+    }
     sessionStorage.setItem("calendly_tracked", "true");
 
-    // ---- 1. Track lead ----
-   /* if (typeof window.createplgemail === "function") {
-      window.createplgemail({
+    // ---- Utility: wait for function ----
+    function waitForFunction(fnName, callback, timeout = 5000) {
+      const start = Date.now();
+
+      function check() {
+        if (typeof window[fnName] === "function") {
+          console.log(fnName + " is ready ✅");
+          return callback();
+        }
+
+        if (Date.now() - start > timeout) {
+          console.error(fnName + " not available after timeout ❌");
+          return;
+        }
+
+        setTimeout(check, 100);
+      }
+
+      check();
+    }
+
+    // ---- 1. Track lead (non-blocking) ----
+    waitForFunction("createPushLapEmail", () => {
+      console.log("Sending lead...");
+      window.createPushLapEmail({
         name: name || null,
         email,
         source: "calendly",
       });
-    } */
+    });
 
-    // ---- 2. Track sale (only if amount exists) ----
-    if (
-      typeof window.createPushLapSale === "function" &&
-      amount !== null &&
-      !isNaN(amount)
-    ) {
-      window.createPushLapSale({
-        amount,
-        name: name || "",
-        email,
-        /*currency, // optional (your function doesn’t require it yet) */
+    // ---- 2. Track sale (only if valid amount) ----
+    if (amount !== null && !isNaN(amount)) {
+      waitForFunction("createPushLapSale", () => {
+        console.log("Running sale...");
+        window.createPushLapSale({
+          amount,
+          name: name || "",
+          email,
+          // currency, // enable if your backend supports it
+        });
       });
+    } else {
+      console.log("Not running sale (invalid or missing amount)");
     }
   })();
 </script>
