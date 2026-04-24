@@ -50,17 +50,17 @@
             }
         </style>
         <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
-   <script 
+   <!-- <script 
         src="https://referly.so/affiliate-tracker.js" 
         data-affiliate data-program-id="6a7a3b0c-51ed-491d-afea-63a71822e3b9" 
         async>
-    </script>
+    </script> -->
 
-   <!-- <script 
+    <script 
         src="./aff.js" 
         data-affiliate data-program-id=" 1a156eba-0561-4179-8097-2aeb3ac9d36b" 
         async>
-    </script> -->
+    </script> 
   </head>
     
 
@@ -126,7 +126,7 @@
             </div>
         </div></a></li>
       </ul> -->
-      <div>
+      <div id="my-cal-inline">
         <button id="test-affiliate-button" type="button">Apply Affiliate ID to Checkout Links</button>
 
 	<p>
@@ -151,6 +151,12 @@
 		</a>
 	</p>
       </div>
+
+      <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-15min"></div>
+
+      <!--<button data-cal-link="oni-alexander-lsabkw/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>
+      Book me
+    </button> -->
             
     </main>
         <!-- <script>
@@ -306,7 +312,8 @@ observer.observe(document.body, { childList: true, subtree: true });
   window.addEventListener('affiliate_referral_ready', updatePolarLinks);
 
 </script> -->
-  <script>
+
+ <!-- <script>
   (function () {
     const params = new URLSearchParams(window.location.search);
 
@@ -404,6 +411,206 @@ observer.observe(document.body, { childList: true, subtree: true });
       console.log("Not running sale (invalid or missing amount)");
     }
   })();
-</script>
+</script> -->
+<!--<script type="text/javascript">
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", "30min", {origin:"https://app.cal.com"});
+
+    Cal.ns["30min"]("inline", {
+        elementOrSelector:"#my-cal-inline-30min",
+        config: {"layout":"month_view","useSlotsViewOnSmallScreen":"true"},
+        calLink: "oni-alexander-lsabkw/30min",
+    });
+
+    Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+</script> -->
+
+
+
+
+
+
+<!--<script>
+  
+  Cal.ns["15min"]("on", {
+    action: "bookingSuccessfulV2",
+    callback: async ({ detail }) => {
+      const { data } = detail;
+
+      const uid = data?.uid;
+      const affiliateId = window.affiliateId;
+
+      if (!uid || !affiliateId) {
+        console.warn("⚠️ Missing uid or affiliateId", { uid, affiliateId });
+        return;
+      }
+
+
+      try {
+        const res = await fetch(" https://kia-ungyved-nahla.ngrok-free.dev/api/webhooks/cal?program_id=1a156eba-0561-4179-8097-2aeb3ac9d36b", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid,
+            affiliateId,
+          }),
+        });
+
+        const result = await res.json();
+
+        console.log("✅ Booking sent to backend:", result);
+      } catch (err) {
+        console.error("❌ Failed to send booking:", err);
+      } 
+    },
+  });
+
+</script> -->
+
+<!-- Cal floating-popup embed code begins -->
+<!--<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+Cal("init", "30min", {origin:"https://app.cal.com"});
+
+  Cal.ns["30min"]("floatingButton", {"calLink":"oni-alexander-lsabkw/30min","config":{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}}); 
+  Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+  </script> -->
+  <!-- Cal floating-popup embed code ends -->
+
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+
+(function initCalWithAffiliateRetry() {
+  const MAX_RETRIES = 20;
+  const RETRY_DELAY_MS = 300;
+  const AFFILIATE_WAIT_MS = 2000;
+
+  let retries = 0;
+  const startedAt = Date.now();
+
+  function runInit() {
+    const affLink = window.affiliateId ?? null;
+
+    // ✅ init namespace
+    Cal("init", "15min", { origin: "https://app.cal.com" });
+
+    // ✅ embed WITH metadata
+    Cal.ns["15min"]("floatingButton", {
+      //elementOrSelector: "#my-cal-inline-15min",
+      calLink: "oni-alexander-lsabkw/15min",
+      config: {
+        layout: "month_view",
+        useSlotsViewOnSmallScreen: true,
+        "metadata[referlyAff]": affLink,
+      },
+    });
+
+    Cal.ns["15min"]("ui", {
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+  }
+
+  function attemptInit() {
+    const elapsed = Date.now() - startedAt;
+
+    const affiliateReady =
+      Boolean(window.affiliateId) || elapsed >= AFFILIATE_WAIT_MS;
+
+    if (affiliateReady) {
+      runInit();
+      return;
+    }
+
+    retries++;
+
+    if (retries > MAX_RETRIES) {
+      console.warn("Affiliate not ready, fallback init");
+      runInit();
+      return;
+    }
+
+    setTimeout(attemptInit, RETRY_DELAY_MS);
+  }
+
+  window.addEventListener("affiliate_referral_ready", attemptInit, { once: true });
+  setTimeout(attemptInit, 0);
+})();
+  </script>
+  <!-- Cal inline embed code ends -->
+
+
+<!--<script>
+  (function initCalWithAffiliateRetry() {
+    const MAX_RETRIES = 20;
+    const RETRY_DELAY_MS = 300;
+    const CAL_READY_TIMEOUT_MS = 8000;
+    const AFFILIATE_WAIT_MS = 2000;
+
+    let retries = 0;
+    const startedAt = Date.now();
+
+    function canInitCal() {
+      return typeof window.Cal === "function";
+    }
+
+    function runInit() {
+      const affLink = window.affiliateId ?? null;
+      console.log("found Aff", affLink);
+      console.log("Prefill");
+
+      window.Cal("inline", {
+        elementOrSelector: "#my-cal-inline-15min",
+        calLink: "oni-alexander-lsabkw/15min",
+        config: {
+          "metadata[referlyAff]": affLink,
+        },
+      }); 
+
+
+     /* window.Cal.ns["15min"]("inline", {
+        elementOrSelector: "#my-cal-inline-15min",
+        calLink: "oni-alexander-lsabkw/15min",
+        config: {
+            "metadata[referlyAff]": affLink,
+        },
+      }); */
+    }
+
+    function attemptInit() {
+      const elapsed = Date.now() - startedAt;
+      const affiliateReady = Boolean(window.affiliateId) || elapsed >= AFFILIATE_WAIT_MS;
+      const calReady = canInitCal();
+
+      if (affiliateReady && calReady) {
+        runInit();
+        return;
+      }
+
+      retries += 1;
+
+      if (retries > MAX_RETRIES || elapsed >= CAL_READY_TIMEOUT_MS) {
+        console.warn("Cal/Affiliate not fully ready in time, initializing with fallback values.");
+        if (calReady) {
+          runInit();
+        }
+        return;
+      }
+
+      setTimeout(attemptInit, RETRY_DELAY_MS);
+    }
+
+    window.addEventListener("affiliate_referral_ready", attemptInit, { once: true });
+    setTimeout(attemptInit, 0);
+  })();
+
+</script> -->
+
+
+
+
 </body>
 </html>
