@@ -1,9 +1,8 @@
 (function () {
   const CDN_PSL_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/psl/dist/psl.min.js";
   // TODO: Change this to the production URL
-  //const API_BASE_URL = "https://www.referly.so";
-   //const API_BASE_URL = "http://localhost:3000";
-   const API_BASE_URL = " https://kia-ungyved-nahla.ngrok-free.dev";
+ // const API_BASE_URL = "https://www.referly.so";
+   const API_BASE_URL = "http://localhost:3000";
 
   
   // Only these URL params are supported for affiliate tracking
@@ -716,7 +715,7 @@
         log("Affiliate Program Data:", affiliateProgramData);
 
         if (affiliateProgramData && affiliateProgramData.program) {
-          DEBUG_LOGGING_ENABLED = Boolean(affiliateProgramData.program.enableDebugLogs);
+         // DEBUG_LOGGING_ENABLED = Boolean(affiliateProgramData.program.enableDebugLogs);
           cookieDuration = affiliateProgramData.program.cookieDuration ?? DEFAULT_COOKIE_DURATION;
           urlModifier = affiliateProgramData.program.urlModifier || "ref";
           
@@ -738,7 +737,7 @@
       log(`Affiliate param from URL (${urlModifier}=):`, affiliateParam);
 
       // Case 3: Existing cookies with valid data AND (no matching param OR same param) - use stored values
-      if (existingRef && existingClickId && affiliateParam) {
+      if (existingRef && existingClickId && !affiliateParam) {
         log("Using existing affiliate data from storage");
         window.affiliateRef = existingRef;
         window.affiliateId = existingClickId;
@@ -766,6 +765,7 @@
         log("Using existing affiliate data from storage for multiple clicks support");
         window.affiliateRef = existingRef;
         window.affiliateId = existingClickId;
+        const previousId = existingClickId;
 
         //===============================
         // NEW LINE FOR MULTIPLE CLICKS
@@ -774,7 +774,7 @@
         log("Creating new click for affiliate:", existingRef);
 
         const browserData = collectBrowserData();
-        console.log("[CALLING PLG CLICK]")
+        log("[PUSHLAP GROWTH]: Creating Multiple clicks for affiliate:", existingRef);
         const response = await fetch(
           `${API_BASE_URL}/api/affiliates/add-click`,
           {
@@ -797,6 +797,7 @@
           // Update window.affiliateId from ref to the actual click ID
           const clickId = String(data.click.id);
           window.affiliateId = clickId;
+          const previousId = existingClickId;
 
           // Save both ref and click ID to storage
           setStorage(refCookieName, existingRef, cookieDuration);
@@ -821,26 +822,11 @@
           // Set up cross-domain link decoration after tracking is resolved
           setupCrossDomainLinkDecoration();
         }
-
-
-        
-        setPickaxe(existingClickId);
-        updateShopifyCartAttributes(existingClickId);
-        
-        // Persist to this domain's storage (important for cross-domain handoff)
-        setStorage(refCookieName, existingRef, cookieDuration);
-        setStorage(clickIdCookieName, existingClickId, cookieDuration);
-
-        dispatchEvent(
-          new CustomEvent("affiliate_id_ready", {
-            detail: { ref: existingRef, clickId: existingClickId },
-          })
-        );
-        setTimeout(() => dispatchEvent(new Event("affiliate_referral_ready")), 100);
-        setupCrossDomainLinkDecoration();
         return;
       }
+      //==============================
       // END OF MULTIPLE CLICKS
+      // ===========================
 
       // Case 4: No valid affiliate param (URL param doesn't match urlModifier) AND no existing ref
       if (!affiliateParam && !existingRef) {
