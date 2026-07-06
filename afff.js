@@ -13,6 +13,16 @@
     "ooo", "freshbook", "img", "join", "referral_code", "fpr", "inv", "cpn",
     "trovabando", "fp_ref"
   ];
+
+  const SUB_ID_PARAM_KEYS = [
+    "sub_id_1",
+    "sub_id_2",
+    "sub_id_3",
+    "sub_id_4",
+    "sub_id_5",
+    "sub_id_6",
+    "sub_id_7",
+  ];
   
   // Default cookie duration in days (used when we can't fetch program data)
   const DEFAULT_COOKIE_DURATION = 60;
@@ -22,7 +32,7 @@
     // DEBUG LOGGER
   // =============================================
 
-    let DEBUG_LOGGING_ENABLED = true;
+    let DEBUG_LOGGING_ENABLED = false;
 
     function log(...args) {
       if (DEBUG_LOGGING_ENABLED && typeof console !== "undefined") {
@@ -183,12 +193,58 @@
     };
   }
 
+  function readSubIdsFromUrl(params) {
+    return {
+      subId1: params.get("sub_id_1") || null,
+      subId2: params.get("sub_id_2") || null,
+      subId3: params.get("sub_id_3") || null,
+      subId4: params.get("sub_id_4") || null,
+      subId5: params.get("sub_id_5") || null,
+      subId6: params.get("sub_id_6") || null,
+      subId7: params.get("sub_id_7") || null,
+    };
+  }
+
+  function getSubIdStorageName(programId, key) {
+    return `${programId}_${key}`;
+  }
+
+  function readStoredSubIds(programId) {
+    const subIds = {};
+    SUB_ID_PARAM_KEYS.forEach(function (key, index) {
+      subIds[`subId${index + 1}`] = getStorage(getSubIdStorageName(programId, key)) || null;
+    });
+    return subIds;
+  }
+
+  function persistSubIds(programId, subIds, days) {
+    SUB_ID_PARAM_KEYS.forEach(function (key, index) {
+      const value = subIds[`subId${index + 1}`];
+      const storageName = getSubIdStorageName(programId, key);
+      if (value) {
+        setStorage(storageName, value, days);
+      } else {
+        deleteStorage(storageName);
+      }
+    });
+  }
+
+  function mergeSubIds(primarySubIds, fallbackSubIds) {
+    const merged = {};
+    for (var index = 1; index <= 7; index += 1) {
+      const key = `subId${index}`;
+      merged[key] = primarySubIds?.[key] || fallbackSubIds?.[key] || null;
+    }
+    return merged;
+  }
+
   // =============================================
   // BROWSER DATA COLLECTION
   // =============================================
 
-  function getUrlParams() {
+  function getUrlParams(fallbackSubIds) {
     const params = new URLSearchParams(window.location.search);
+    const subIds = readSubIdsFromUrl(params);
     return {
       utmSource: params.get("utm_source") || null,
       utmMedium: params.get("utm_medium") || null,
@@ -203,6 +259,13 @@
       ttclid: params.get("ttclid") || null,
       twclid: params.get("twclid") || null,
       liFatId: params.get("li_fat_id") || null,
+      subId1: subIds.subId1 || fallbackSubIds?.subId1 || null,
+      subId2: subIds.subId2 || fallbackSubIds?.subId2 || null,
+      subId3: subIds.subId3 || fallbackSubIds?.subId3 || null,
+      subId4: subIds.subId4 || fallbackSubIds?.subId4 || null,
+      subId5: subIds.subId5 || fallbackSubIds?.subId5 || null,
+      subId6: subIds.subId6 || fallbackSubIds?.subId6 || null,
+      subId7: subIds.subId7 || fallbackSubIds?.subId7 || null,
     };
   }
 
@@ -383,9 +446,9 @@
     return "desktop";
   }
 
-  function collectBrowserData() {
+  function collectBrowserData(fallbackSubIds) {
     const userAgent = navigator.userAgent || null;
-    const urlParams = getUrlParams();
+    const urlParams = getUrlParams(fallbackSubIds);
     const referrerDomain = parseReferrerDomain(document.referrer);
     const { browserName, browserVersion } = parseBrowserInfo(userAgent);
     const { osName, osVersion } = parseOsInfo(userAgent);
@@ -612,6 +675,7 @@
 
     let existingRef = getStorage(refCookieName) || null;
     let existingClickId = getStorage(clickIdCookieName) || null;
+    let existingSubIds = readStoredSubIds(affiliateProgramId);
 
     // If we received a cross-domain handoff, use that data to populate local storage
     if (crossDomainHandoff) {
@@ -620,8 +684,12 @@
       log("Restoring affiliate data from cross-domain handoff");
     }
 
+    const landingSubIds = readSubIdsFromUrl(urlParams);
+    let currentSubIds = mergeSubIds(landingSubIds, existingSubIds);
+
     log("Existing Affiliate Ref:", existingRef);
     log("Existing Click ID:", existingClickId);
+    log("Existing Sub IDs:", existingSubIds);
 
     // =============================================
     // OPTIMIZATION: Quick check if ANY potential affiliate param exists in URL
@@ -654,6 +722,7 @@
       // Persist to this domain's storage (important for cross-domain handoff)
       setStorage(refCookieName, existingRef, DEFAULT_COOKIE_DURATION);
       setStorage(clickIdCookieName, existingClickId, DEFAULT_COOKIE_DURATION);
+      persistSubIds(affiliateProgramId, currentSubIds, DEFAULT_COOKIE_DURATION);
 
       window.affiliateRef = existingRef;
       window.affiliateId = existingClickId;
@@ -715,7 +784,7 @@
         log("Affiliate Program Data:", affiliateProgramData);
 
         if (affiliateProgramData && affiliateProgramData.program) {
-         // DEBUG_LOGGING_ENABLED = Boolean(affiliateProgramData.program.enableDebugLogs);
+          DEBUG_LOGGING_ENABLED = Boolean(affiliateProgramData.program.enableDebugLogs);
           cookieDuration = affiliateProgramData.program.cookieDuration ?? DEFAULT_COOKIE_DURATION;
           urlModifier = affiliateProgramData.program.urlModifier || "ref";
           
@@ -732,6 +801,8 @@
 
       log("Program urlModifier:", urlModifier);
 
+      persistSubIds(affiliateProgramId, currentSubIds, cookieDuration);
+
       // Now get the ACTUAL affiliate param using the program's specific urlModifier
       const affiliateParam = urlParams.get(urlModifier);
       log(`Affiliate param from URL (${urlModifier}=):`, affiliateParam);
@@ -747,6 +818,7 @@
         // Persist to this domain's storage (important for cross-domain handoff)
         setStorage(refCookieName, existingRef, cookieDuration);
         setStorage(clickIdCookieName, existingClickId, cookieDuration);
+        persistSubIds(affiliateProgramId, currentSubIds, cookieDuration);
 
         dispatchEvent(
           new CustomEvent("affiliate_id_ready", {
@@ -773,7 +845,7 @@
         // Create the new multiple click for the affiliate
         log("Creating new click for affiliate:", existingRef);
 
-        const browserData = collectBrowserData();
+        const browserData = collectBrowserData(currentSubIds);
         log("[PUSHLAP GROWTH]: Creating Multiple clicks for affiliate:", existingRef);
         const response = await fetch(
           `${API_BASE_URL}/api/affiliates/add-click`,
@@ -802,6 +874,7 @@
           // Save both ref and click ID to storage
           setStorage(refCookieName, existingRef, cookieDuration);
           setStorage(clickIdCookieName, clickId, cookieDuration);
+          persistSubIds(affiliateProgramId, currentSubIds, cookieDuration);
 
           // Set Pickaxe with the clickId (affiliateId)
           setPickaxe(clickId);
@@ -848,7 +921,8 @@
       // Create the click
       log("Creating new click for affiliate:", currentAffiliateParam);
 
-      const browserData = collectBrowserData();
+      currentSubIds = mergeSubIds(readSubIdsFromUrl(urlParams), existingSubIds);
+      const browserData = collectBrowserData(currentSubIds);
 
       const response = await fetch(
         `${API_BASE_URL}/api/affiliates/add-click`,
@@ -875,6 +949,7 @@
         // Save both ref and click ID to storage
         setStorage(refCookieName, currentAffiliateParam, cookieDuration);
         setStorage(clickIdCookieName, clickId, cookieDuration);
+        persistSubIds(affiliateProgramId, currentSubIds, cookieDuration);
 
         // Set Pickaxe with the clickId (affiliateId)
         setPickaxe(clickId);
@@ -900,6 +975,7 @@
     } catch (error) {
       deleteStorage(refCookieName);
       deleteStorage(clickIdCookieName);
+      persistSubIds(affiliateProgramId, {}, DEFAULT_COOKIE_DURATION);
       window.affiliateRef = null;
       window.affiliateId = null;
       log("Error handling click:", error);
